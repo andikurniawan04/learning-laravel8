@@ -32,14 +32,24 @@
                         </h4>
                         <p class="text-muted">Before you get started, you must login or register if you don't already
                             have an account.</p>
-                        <form method="POST" action="#" class="needs-validation" novalidate="">
+                        @if (session()->has('success'))
+                            <div class="alert alert-success" role="alert">
+                                Login success!
+                        @endif
+                        @if (session()->has('failed'))
+                            <div class="alert alert-danger" role="alert">
+                                Login failed!
+                            </div>
+                        @endif
+                        <form method="POST" action="{{ route('auth') }}" class="needs-validation" novalidate="">
+                            @csrf
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input id="email" type="email" class="form-control" name="email" tabindex="1" required
-                                    autofocus value="{{ old('email') }}">
-                                <div class="invalid-feedback">
-                                    Please fill in your email
-                                </div>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                                    name="email" tabindex="1" required autofocus value="{{ old('email') }}">
+                                @error('email')
+                                    {{ $message }}
+                                @enderror
                             </div>
 
                             <div class="form-group">
